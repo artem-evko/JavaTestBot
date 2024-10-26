@@ -1,14 +1,16 @@
 package com.evko.JavaTestBot.demo.JavaTestBot.command;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static com.evko.JavaTestBot.demo.JavaTestBot.command.CommandName.START;
 @Component
+@RequiredArgsConstructor
 public class StartCommand extends AbstractCommand{
     public final static String START_MESSAGE="Привет. Я JavaTestBot. Я помогу тебе изучить Java. " +
-            " Напиши команду /help, чтобы узнать что я умею.";
+            " Напиши команду /help, чтобы узнать, что я умею.";
     @Override
     public SendMessage buildResponse(Update update) {
         return new SendMessage(update.getMessage().getChatId().toString(),START_MESSAGE);
