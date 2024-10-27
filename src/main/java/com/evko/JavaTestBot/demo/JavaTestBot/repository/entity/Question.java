@@ -25,7 +25,7 @@ public class Question {
     @Column(name = "question_type", nullable = false)
     private QuestionType questionType;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     private List<Answer> answers; // Список ответов
 
 }
