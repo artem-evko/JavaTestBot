@@ -4,7 +4,7 @@ public enum CommandName {
     START("/start"),
     HELP("/help"),
     NO("nocommand"),
-    START_TEST("/starttest");
+    START_TEST("/start_test");
     private final String commandName;
     CommandName(String commandName){
         this.commandName=commandName;

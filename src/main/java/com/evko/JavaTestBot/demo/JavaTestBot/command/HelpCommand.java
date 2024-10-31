@@ -17,7 +17,7 @@ public class HelpCommand extends AbstractCommand{
     + "Уровни сложности:\n"
     + "1 - легкий\n"
     + "2 - базовый\n"
-    + "3 - повышенный\n","asdfj","sadfasdf");
+    + "3 - повышенный\n","/start_test","/start_test [уровень сложности]");
     @Override
     public SendMessage buildResponse(Update update) {
         return new SendMessage(update.getMessage().getChatId().toString(),HELP_MESSAGE);
