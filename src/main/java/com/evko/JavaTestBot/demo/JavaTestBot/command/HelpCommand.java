@@ -9,7 +9,7 @@ import static com.evko.JavaTestBot.demo.JavaTestBot.command.CommandName.HELP;
 @Component
 @RequiredArgsConstructor
 public class HelpCommand extends AbstractCommand{
-    public static final String HELP_MESSAGE=String.format("✨Дотупные команды✨\n\n"
+    public static final String HELP_MESSAGE=String.format("✨Доcтупные команды✨\n\n"
     +"Прохождение тестов:\n"
     + "%s - начать тест с рандомными вопросами\n"
     + "%s - начать тест с вопросами с указаным уровнем сложности\n\n"

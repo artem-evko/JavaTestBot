@@ -29,19 +29,26 @@ public class JavaTestBot extends TelegramLongPollingBot {
         if(update.hasMessage()&&update.getMessage().hasText()){
             String message=update.getMessage().getText().trim();
             SendMessage response;
-            if(message.startsWith(COMMAND_PREFIX)){
-                String commandIdentifier=message.split(" ")[0].toLowerCase();
+            executeResponse(update, message);
+        }else if (update.hasCallbackQuery()) {
+            String call_data = update.getCallbackQuery().getData();
+            executeResponse(update,call_data);
+        }
+    }
 
-               response = commandContainer.retrieveCommand(commandIdentifier).buildResponse(update);
-            }else {
-                response=commandContainer.retrieveCommand(NO.getCommandName()).buildResponse(update);
-            }
+    private void executeResponse(Update update, String message) {
+        SendMessage response;
+        if (message.startsWith(COMMAND_PREFIX)) {
+            String commandIdentifier = message.split(" ")[0].toLowerCase();
+            response = commandContainer.retrieveCommand(commandIdentifier).buildResponse(update);
+        } else {
+            response = commandContainer.retrieveCommand(NO.getCommandName()).buildResponse(update);
+        }
 
-            try {
-                execute(response);
-            } catch (TelegramApiException e) {
-                throw new RuntimeException(e);
-            }
+        try {
+            execute(response);
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
         }
     }
 

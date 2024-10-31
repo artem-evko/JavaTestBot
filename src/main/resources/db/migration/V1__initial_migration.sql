@@ -29,3 +29,17 @@ CREATE TABLE IF NOT EXISTS test_result (
     completed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES tg_user(id) ON DELETE CASCADE
 );
+-- Создание таблицы тестов
+CREATE TABLE IF NOT EXISTS test (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL  -- Название теста
+);
+
+-- Создание связующей таблицы для связи тестов и вопросов
+CREATE TABLE IF NOT EXISTS test_question (
+    test_id INT,
+    question_id INT,
+    PRIMARY KEY (test_id, question_id),
+    FOREIGN KEY (test_id) REFERENCES test(id) ON DELETE CASCADE,
+    FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE
+);
