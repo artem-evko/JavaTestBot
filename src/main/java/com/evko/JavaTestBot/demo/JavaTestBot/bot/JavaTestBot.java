@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import static com.evko.JavaTestBot.demo.JavaTestBot.command.CommandName.NO;
@@ -37,7 +39,7 @@ public class JavaTestBot extends TelegramLongPollingBot {
     }
 
     private void executeResponse(Update update, String message) {
-        SendMessage response;
+        BotApiMethod<?> response;
         if (message.startsWith(COMMAND_PREFIX)) {
             String commandIdentifier = message.split(" ")[0].toLowerCase();
             response = commandContainer.retrieveCommand(commandIdentifier).buildResponse(update);
@@ -45,8 +47,15 @@ public class JavaTestBot extends TelegramLongPollingBot {
             response = commandContainer.retrieveCommand(NO.getCommandName()).buildResponse(update);
         }
 
+        executeBotMethod(update, response);
+    }
+    private void executeBotMethod(Update update, BotApiMethod<?> botMethod) {
         try {
-            execute(response);
+            if (botMethod instanceof SendMessage) {
+                execute((SendMessage) botMethod);
+            } else if (botMethod instanceof EditMessageText) {
+                execute((EditMessageText) botMethod);
+            }
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }

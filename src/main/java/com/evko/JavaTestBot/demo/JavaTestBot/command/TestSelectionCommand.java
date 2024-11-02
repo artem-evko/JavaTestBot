@@ -1,6 +1,5 @@
 package com.evko.JavaTestBot.demo.JavaTestBot.command;
 
-import com.evko.JavaTestBot.demo.JavaTestBot.keyboard.StartKeyboard;
 import com.evko.JavaTestBot.demo.JavaTestBot.keyboard.TestSelectionKeyboard;
 import com.evko.JavaTestBot.demo.JavaTestBot.service.TestService;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,7 @@ public class TestSelectionCommand extends AbstractCommand{
 
         sendMessage.setChatId(chatId.toString());
         sendMessage.setText("Выберете нужный тест");
-        InlineKeyboardMarkup markupInline = TestSelectionKeyboard.GetTestSelectionKeyboard(testService);
+        InlineKeyboardMarkup markupInline = TestSelectionKeyboard.createTestSelectionKeyboard(testService);
         sendMessage.setReplyMarkup(markupInline);
 
         return sendMessage;
