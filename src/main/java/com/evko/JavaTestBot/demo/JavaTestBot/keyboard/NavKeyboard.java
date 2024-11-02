@@ -16,7 +16,7 @@ public class NavKeyboard {
             Question question = questionList.get(i);
             InlineKeyboardButton button = new InlineKeyboardButton();
             button.setText(String.valueOf(i + 1)); // Задайте нужный текст кнопки
-            button.setCallbackData("question " + question.getId()); // Установите уникальные callback данные для кнопки
+            button.setCallbackData("/question " + i); // Установите уникальные callback данные для кнопки
 
             row.add(button);
 

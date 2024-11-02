@@ -1,7 +1,9 @@
 package com.evko.JavaTestBot.demo.JavaTestBot.command;
 
 import com.evko.JavaTestBot.demo.JavaTestBot.keyboard.CombinedKeyboard;
+import com.evko.JavaTestBot.demo.JavaTestBot.keyboard.NavKeyboard;
 import com.evko.JavaTestBot.demo.JavaTestBot.repository.entity.Question;
+import com.evko.JavaTestBot.demo.JavaTestBot.repository.entity.QuestionType;
 import com.evko.JavaTestBot.demo.JavaTestBot.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,6 +11,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 import java.util.List;
 
@@ -26,10 +29,12 @@ public class TestIdCommand extends AbstractCommand{
         } else {
             throw new IllegalArgumentException("Update does not contain a valid message or callback query.");
         }
-        List<Question> questionList=questionService.getQuestions(parseTestId(update.getCallbackQuery().getData()));
+        List<Question> questionList=questionService.getQuestionsForUser(chatId,parseTestId(update.getCallbackQuery().getData()));
         sendMessage.setChatId(chatId);
         sendMessage.setText(questionList.get(0).getText());
         sendMessage.setReplyMarkup(CombinedKeyboard.createCombinedKeyboard(questionList,0));
+
+
         return sendMessage;
     }
     private Long parseTestId(String message){

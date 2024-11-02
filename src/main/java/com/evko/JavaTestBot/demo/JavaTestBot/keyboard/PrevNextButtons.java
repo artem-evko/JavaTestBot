@@ -14,24 +14,24 @@ public class PrevNextButtons {
         {
             InlineKeyboardButton nextButton=new InlineKeyboardButton();
             nextButton.setText("Следующий вопрос");
-            nextButton.setCallbackData("question "+1);
+            nextButton.setCallbackData("/question "+1);
             rowInline.add(nextButton);
             return rowInline;
         } else if (id==questionList.size()-1) {
             InlineKeyboardButton prevButton=new InlineKeyboardButton();
             prevButton.setText("Предыдущий вопрос");
-            prevButton.setCallbackData("question "+(questionList.size()-1));
+            prevButton.setCallbackData("/question "+(questionList.size()-2));
             rowInline.add(prevButton);
             return rowInline;
         }
         InlineKeyboardButton prevButton=new InlineKeyboardButton();
         prevButton.setText("Предыдущий вопрос");
-        prevButton.setCallbackData("question "+(id-1));
+        prevButton.setCallbackData("/question "+(id-1));
         rowInline.add(prevButton);
 
         InlineKeyboardButton nextButton=new InlineKeyboardButton();
         nextButton.setText("Следующий вопрос");
-        nextButton.setCallbackData("question "+(id+1));
+        nextButton.setCallbackData("/question "+(id+1));
         rowInline.add(nextButton);
 
         return rowInline;
