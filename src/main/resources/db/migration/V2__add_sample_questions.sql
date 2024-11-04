@@ -28,4 +28,5 @@ INSERT INTO test_question (test_id, question_id) VALUES
     (1, 2),  -- Связываем Тест 1 с вопросом 2
     (1, 3),  -- Связываем Тест 1 с вопросом 3
     (1, 4),  -- Связываем Тест 1 с вопросом 4
-    (1, 5);  -- Связываем Тест 1 с вопросом 5
+    (1, 5)
+     ON DUPLICATE KEY UPDATE question_id = question_id;

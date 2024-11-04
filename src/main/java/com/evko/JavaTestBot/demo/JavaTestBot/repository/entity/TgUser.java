@@ -12,7 +12,7 @@ import java.util.List;
 public class TgUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Автоматическая генерация ID
-    private int id;
+    private Long id;
 
     @Column(name = "telegram_id", unique = true, nullable = false) // Уникальное значение, не может быть null
     private long telegramId;
@@ -20,7 +20,7 @@ public class TgUser {
     @Column(name = "username") // Необязательное поле
     private String username;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // Связь с TestResult
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // Связь с TestResult
     private List<TestResult> testResults = new ArrayList<>();
 
 }

@@ -2,9 +2,13 @@ package com.evko.JavaTestBot.demo.JavaTestBot.command;
 
 import com.evko.JavaTestBot.demo.JavaTestBot.keyboard.CombinedKeyboard;
 import com.evko.JavaTestBot.demo.JavaTestBot.keyboard.NavKeyboard;
+import com.evko.JavaTestBot.demo.JavaTestBot.repository.entity.CurResults;
 import com.evko.JavaTestBot.demo.JavaTestBot.repository.entity.Question;
 import com.evko.JavaTestBot.demo.JavaTestBot.repository.entity.QuestionType;
+import com.evko.JavaTestBot.demo.JavaTestBot.repository.entity.TgUser;
+import com.evko.JavaTestBot.demo.JavaTestBot.service.CurResultsService;
 import com.evko.JavaTestBot.demo.JavaTestBot.service.QuestionService;
+import com.evko.JavaTestBot.demo.JavaTestBot.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -20,12 +24,14 @@ import static com.evko.JavaTestBot.demo.JavaTestBot.command.CommandName.QUESTION
 @RequiredArgsConstructor
 public class QuestionIdCommand extends AbstractCommand{
     private final QuestionService QuestionService;
+    private final CurResultsService curResultsService;
+    private final UserService userService;
 
     @Override
     public BotApiMethod<?> buildResponse(Update update) {
         Long chatId;
         Integer messageId;
-        int questionIndex;
+        long questionIndex;
 
         if (update.hasCallbackQuery()) {
             chatId = update.getCallbackQuery().getMessage().getChatId();
@@ -43,9 +49,12 @@ public class QuestionIdCommand extends AbstractCommand{
         }
 
         // Получаем текущий вопрос
-        Question currentQuestion = questionList.get(questionIndex);
-
-        InlineKeyboardMarkup newKeyboardMarkup = CombinedKeyboard.createCombinedKeyboard(questionList, questionIndex);
+        Question currentQuestion = questionList.get(Math.toIntExact(questionIndex));
+        Long userId = userService.findByTelegramId(chatId)
+                .map(TgUser::getId) // Извлекаем id пользователя
+                .orElseThrow(() -> new RuntimeException("User not found with telegramId: " + chatId));
+        List<Long> selectedAnswersId=curResultsService.findAnswerIdsByUserId(userId);
+        InlineKeyboardMarkup newKeyboardMarkup = CombinedKeyboard.createCombinedKeyboard(questionList, questionIndex,selectedAnswersId);
 
         // Проверяем, изменилось ли содержимое сообщения или клавиатура
         if (isMessageChanged(update.getCallbackQuery().getMessage(), currentQuestion.getText(), newKeyboardMarkup)) {
@@ -60,8 +69,8 @@ public class QuestionIdCommand extends AbstractCommand{
         return null;
     }
 
-    private int parseQuestionIndex(String data) {
-        return Integer.parseInt(data.split(" ")[1]);
+    private Long parseQuestionIndex(String data) {
+        return Long.parseLong(data.split(" ")[1]);
     }
     private boolean isMessageChanged(Message currentMessage, String newText, InlineKeyboardMarkup newKeyboard) {
         String currentText = currentMessage.getText();

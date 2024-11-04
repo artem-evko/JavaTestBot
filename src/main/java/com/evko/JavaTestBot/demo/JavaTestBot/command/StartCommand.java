@@ -1,6 +1,8 @@
 package com.evko.JavaTestBot.demo.JavaTestBot.command;
 
 import com.evko.JavaTestBot.demo.JavaTestBot.keyboard.StartKeyboard;
+import com.evko.JavaTestBot.demo.JavaTestBot.repository.entity.TgUser;
+import com.evko.JavaTestBot.demo.JavaTestBot.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -12,6 +14,7 @@ import static com.evko.JavaTestBot.demo.JavaTestBot.command.CommandName.START;
 @Component
 @RequiredArgsConstructor
 public class StartCommand extends AbstractCommand{
+    private final UserService userService;
     public final static String START_MESSAGE="Привет. Я JavaTestBot. Я помогу тебе изучить Java. " +
             " Напиши команду /help, чтобы узнать, что я умею.";
 
@@ -27,6 +30,8 @@ public class StartCommand extends AbstractCommand{
         } else {
             throw new IllegalArgumentException("Update does not contain a valid message or callback query.");
         }
+
+        userService.getOrCreateUser(chatId, update.getMessage().getFrom().getUserName());
 
         sendMessage.setChatId(chatId.toString());
         sendMessage.setText(START_MESSAGE);

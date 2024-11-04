@@ -21,14 +21,7 @@ CREATE TABLE IF NOT EXISTS tg_user (
     username VARCHAR(50)
 );
 
--- Создание таблицы результатов тестов
-CREATE TABLE IF NOT EXISTS test_result (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    score INT NOT NULL,
-    completed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES tg_user(id) ON DELETE CASCADE
-);
+
 -- Создание таблицы тестов
 CREATE TABLE IF NOT EXISTS test (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -37,9 +30,29 @@ CREATE TABLE IF NOT EXISTS test (
 
 -- Создание связующей таблицы для связи тестов и вопросов
 CREATE TABLE IF NOT EXISTS test_question (
+    id  INT AUTO_INCREMENT PRIMARY KEY,
     test_id INT,
     question_id INT,
-    PRIMARY KEY (test_id, question_id),
     FOREIGN KEY (test_id) REFERENCES test(id) ON DELETE CASCADE,
     FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS cur_results (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    question_id INT,
+    answer_id INT,
+    is_correct BOOLEAN NOT NULL,  -- Используем BOOLEAN (псевдоним для TINYINT(1))
+    FOREIGN KEY (user_id) REFERENCES tg_user(id) ON DELETE CASCADE,
+    FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE
+);
+-- Создание таблицы результатов тестов
+CREATE TABLE IF NOT EXISTS test_result (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    test_id INT,
+    score INT NOT NULL,
+    completed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES tg_user(id) ON DELETE CASCADE,
+    FOREIGN KEY (test_id) REFERENCES test(id) ON DELETE CASCADE
 );

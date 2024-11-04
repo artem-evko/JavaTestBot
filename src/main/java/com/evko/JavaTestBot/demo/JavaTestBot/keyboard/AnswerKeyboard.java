@@ -14,7 +14,25 @@ public class AnswerKeyboard {
         for (Answer answer : question.getAnswers()) {
             InlineKeyboardButton button = new InlineKeyboardButton();
             button.setText(answer.getText());
-            button.setCallbackData("answer" + answer.getId());
+            button.setCallbackData("/answer " + answer.getId());
+
+            List<InlineKeyboardButton> row = new ArrayList<>();
+            row.add(button);
+            answerButtons.add(row);
+        }
+
+        return answerButtons;
+    }
+    public static List<List<InlineKeyboardButton>> createAnswerButtons(List<Long> selectedAnswersId, Question question) {
+        List<List<InlineKeyboardButton>> answerButtons = new ArrayList<>();
+
+        for (Answer answer : question.getAnswers()) {
+            InlineKeyboardButton button = new InlineKeyboardButton();
+
+            // Проверка, находится ли id ответа в списке выбранных ответов
+            boolean isSelected = selectedAnswersId.contains(answer.getId());
+            button.setText(isSelected ? "✅ " + answer.getText() : answer.getText());
+            button.setCallbackData("/answer " + answer.getId());
 
             List<InlineKeyboardButton> row = new ArrayList<>();
             row.add(button);

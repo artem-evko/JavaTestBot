@@ -33,6 +33,7 @@ public class QuestionService {
         return allQuestions; // Верните нужное количество вопросов, если нужно ограничение
     }
 
+
     public void clearCache(Long chatId) {
         userQuestionCache.remove(chatId);
     }

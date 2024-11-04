@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ManyToOne // Много ответов могут принадлежать одному вопросу
     @JoinColumn(name = "question_id", nullable = false)

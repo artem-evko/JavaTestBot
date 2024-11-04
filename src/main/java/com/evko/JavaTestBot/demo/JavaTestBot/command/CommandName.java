@@ -7,7 +7,9 @@ public enum CommandName {
     START_TEST("/start_test"),
     TEST_SELECTION("/test_selection"),
     TEST("/test"),
-    QUESTION("/question");
+    QUESTION("/question"),
+    ANSWER("/answer"),
+    FINISH("/finish");
     private final String commandName;
     CommandName(String commandName){
         this.commandName=commandName;
