@@ -40,6 +40,7 @@ public class FinishCommand extends AbstractCommand{
         int score = calculateScore(tgUser);
         testResultService.saveTestResult(tgUser,currentTest,score);
         curResultsService.deleteByUser(tgUser);
+        questionService.clearCache(chatId);
         SendMessage message = new SendMessage();
         message.setChatId(chatId.toString());
         message.setText("Тест завершен. Ваш результат: " + score+" б");
