@@ -16,11 +16,11 @@ public class StartKeyboard {
         InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
         inlineKeyboardButton1.setText("Выбрать тест");
         inlineKeyboardButton1.setCallbackData("/test_selection");
-        InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
-        inlineKeyboardButton2.setText("To do");
-        inlineKeyboardButton2.setCallbackData("nothing");
+//        InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
+//        inlineKeyboardButton2.setText("To do");
+//        inlineKeyboardButton2.setCallbackData("nothing");
         rowInline1.add(inlineKeyboardButton1);
-        rowInline1.add(inlineKeyboardButton2);
+//        rowInline1.add(inlineKeyboardButton2);
         rowsInline.add(rowInline1);
         markupInline.setKeyboard(rowsInline);
         return markupInline;
